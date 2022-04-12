@@ -8,7 +8,7 @@
 import SnapKit
 import UIKit
 
-class ReviewListViewController: UIViewController {
+class ReviewListViewController: UIViewController, UITextViewDelegate {
     // Presenter 호출해서 user action을 알려줘야 함 => user action을 알려줄 presenter의 property 생성
     private lazy var presenter = ReviewListPresenter(viewController: self)
  
@@ -24,6 +24,13 @@ class ReviewListViewController: UIViewController {
         
         presenter.viewDidLoad()
     }
+    
+    // 화면이 가려졌다가 새로 보여지면 새로 데이터를 가져와서 테이블 뷰를 그리도록 함
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        presenter.viewWillAppear()
+    }
 }
 
 // viewController가 ReviewListProtocol을 따르도록 함
@@ -35,7 +42,7 @@ extension ReviewListViewController: ReviewListProtocol {
         let rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .add,
             target: self,
-            action: nil
+            action: #selector(didTapRightBarButtonItem)
         )
         navigationItem.rightBarButtonItem = rightBarButtonItem
     }
@@ -45,6 +52,23 @@ extension ReviewListViewController: ReviewListProtocol {
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+    
+    func presentToReviewWriteViewController() {
+        let vc = UINavigationController(rootViewController: ReviewWriteViewController())
+        vc.modalPresentationStyle = .fullScreen
+        
+        present(vc, animated: true)
+    }
+    
+    func reloadTableView() {
+        tableView.reloadData()
+    }
+}
+
+private extension ReviewListViewController {
+    @objc func didTapRightBarButtonItem() {
+        presenter.didTapRightBarButtonItem()
     }
 }
 

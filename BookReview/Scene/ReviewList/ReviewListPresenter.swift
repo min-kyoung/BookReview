@@ -11,6 +11,8 @@ import UIKit
 protocol ReviewListProtocol {
     func setupNavigationBar()
     func setupViews()
+    func presentToReviewWriteViewController()
+    func reloadTableView()
 }
 
 class ReviewListPresenter: NSObject {
@@ -25,6 +27,15 @@ class ReviewListPresenter: NSObject {
     func viewDidLoad() {
         viewController.setupNavigationBar()
         viewController.setupViews()
+    }
+    
+    func viewWillAppear() {
+        // TODO: UserDefaults 내용 업데이트 하기
+        viewController.reloadTableView()
+    }
+    
+    func didTapRightBarButtonItem() {
+        viewController.presentToReviewWriteViewController()
     }
 }
 
