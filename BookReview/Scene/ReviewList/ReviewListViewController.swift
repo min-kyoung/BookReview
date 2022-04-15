@@ -24,9 +24,7 @@ class ReviewListViewController: UIViewController, UITextViewDelegate {
         
         presenter.viewDidLoad()
         
-        BookSearchManager().request(from: "SWIFT") { books in
-            print(books)
-        }
+       
     }
     
     // 화면이 가려졌다가 새로 보여지면 새로 데이터를 가져와서 테이블 뷰를 그리도록 함
